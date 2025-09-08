@@ -17,9 +17,12 @@ st.title("FUTO Post-UTME Aggregate Calculator")
 # Input for JAMB score
 jamb_score = st.number_input("Enter your JAMB score:", min_value=0, max_value=400, step=1)
 
+# Checkbox for single sitting
+single_sitting = st.checkbox("Single Sitting")
+
 # O'level subject grades
-st.subheader("Select your O'level grades in 4 relevant subjects")
-st.write("Note: This is English language and the three other subjects from your JAMB combination but their grades in your O'level result.")
+st.subheader("Select your O'level grades for 4 relevant subjects")
+st.write("Note: This is English language and the four other subjects from your JAMB combination but their grades in your O'level result.")
 
 olevel_grades = []
 ar_selected = False
@@ -33,7 +36,10 @@ for i in range(1, 5):
     if grade == "AR":
         ar_selected = True
     else:
-        olevel_grades.append(grade_mapping[grade])
+        score = grade_mapping[grade]
+        if single_sitting:
+            score += 5
+        olevel_grades.append(score)
 
 # Submit button
 if st.button("Calculate Aggregate"):
