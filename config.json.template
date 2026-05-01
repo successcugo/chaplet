@@ -1,0 +1,48 @@
+{
+    "telegram": {
+        "token": "YOUR_TELEGRAM_BOT_TOKEN",
+        "chat_id": "YOUR_CHAT_ID"
+    },
+    "data_provider": "tradingview-ta",
+    "check_frequency_minutes": 5,
+    "tp_sl_ratio": 2.0,
+    "tickers": [
+        {"symbol": "XAUUSD", "exchange": "FX_IDC", "screener": "forex", "type": "forex"},
+        {"symbol": "BTCUSD", "exchange": "BINANCE", "screener": "crypto", "type": "crypto"},
+        {"symbol": "EURUSD", "exchange": "FX_IDC", "screener": "forex", "type": "forex"},
+        {"symbol": "GBPUSD", "exchange": "FX_IDC", "screener": "forex", "type": "forex"},
+        {"symbol": "ETHUSD", "exchange": "BINANCE", "screener": "crypto", "type": "crypto"},
+        {"symbol": "SOLUSD", "exchange": "BINANCE", "screener": "crypto", "type": "crypto"},
+        {"symbol": "BNBUSD", "exchange": "BINANCE", "screener": "crypto", "type": "crypto"},
+        {"symbol": "ADAUSD", "exchange": "BINANCE", "screener": "crypto", "type": "crypto"},
+        {"symbol": "USDJPY", "exchange": "FX_IDC", "screener": "forex", "type": "forex"},
+        {"symbol": "AUDUSD", "exchange": "FX_IDC", "screener": "forex", "type": "forex"},
+        {"symbol": "USDCAD", "exchange": "FX_IDC", "screener": "forex", "type": "forex"},
+        {"symbol": "AAPL", "exchange": "NASDAQ", "screener": "america", "type": "stock"},
+        {"symbol": "TSLA", "exchange": "NASDAQ", "screener": "america", "type": "stock"},
+        {"symbol": "NVDA", "exchange": "NASDAQ", "screener": "america", "type": "stock"},
+        {"symbol": "AMZN", "exchange": "NASDAQ", "screener": "america", "type": "stock"},
+        {"symbol": "MSFT", "exchange": "NASDAQ", "screener": "america", "type": "stock"}
+    ],
+    "strategies": {
+        "ema_crossover": {
+            "enabled": true,
+            "fast_period": 9,
+            "slow_period": 21
+        },
+        "rsi_macd_confluence": {
+            "enabled": true,
+            "rsi_period": 14,
+            "rsi_overbought": 70,
+            "rsi_oversold": 30,
+            "macd_fast": 12,
+            "macd_slow": 26,
+            "macd_signal": 9
+        },
+        "bollinger_bands": {
+            "enabled": true,
+            "period": 20,
+            "std_dev": 2
+        }
+    }
+}

@@ -1,0 +1,21 @@
+[package]
+name = "trading-signal-generator"
+version = "0.1.0"
+description = "24/7 Trading Signal Generator with Telegram integration"
+
+[[module]]
+name = "generator"
+source = "main.py"
+kind = "python"
+
+[[module]]
+name = "gui"
+source = "gui.py"
+kind = "python"
+
+[dependencies]
+"tradingview-ta" = "3.3.0"
+"pandas" = "3.0.2"
+"requests" = "2.33.1"
+"streamlit" = "1.57.0"
+"tvdatafeed" = { git = "https://github.com/rongardF/tvdatafeed.git" }
