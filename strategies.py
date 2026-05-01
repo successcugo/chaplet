@@ -76,6 +76,9 @@ class Strategy:
         """
         Evaluates all enabled strategies and returns a combined signal.
         """
+        if not indicators:
+            return {}
+
         signals = {}
 
         if self.config['strategies']['ema_crossover']['enabled']:

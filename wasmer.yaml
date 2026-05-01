@@ -1,0 +1,31 @@
+kind: wasmer.io/App.v1
+name: trading-signal-generator
+description: 24/7 Trading Signal Generator
+public: true
+
+commands:
+  - name: run
+    module: python
+    args:
+      - main.py
+
+  - name: gui
+    module: python
+    args:
+      - -m
+      - streamlit
+      - run
+      - gui.py
+      - --server.port
+      - $PORT
+
+modules:
+  - name: python
+    source: python:3.12
+    kind: python
+
+dependencies:
+  - tradingview-ta
+  - requests
+  - streamlit
+  - git+https://github.com/rongardF/tvdatafeed.git

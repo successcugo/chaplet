@@ -15,9 +15,22 @@ logging.basicConfig(
     ]
 )
 
+import os
+
 def load_config():
     with open('config.json', 'r') as f:
-        return json.load(f)
+        config = json.load(f)
+
+    # Override with environment variables if present
+    env_token = os.environ.get("TELEGRAM_TOKEN")
+    env_chat_id = os.environ.get("TELEGRAM_CHAT_ID")
+
+    if env_token:
+        config['telegram']['token'] = env_token
+    if env_chat_id:
+        config['telegram']['chat_id'] = env_chat_id
+
+    return config
 
 def main():
     logging.info("Starting Trading Signal Generator...")
@@ -25,10 +38,15 @@ def main():
 
     data_provider = DataProvider(config)
     strategy_evaluator = Strategy(config)
-    notifier = TelegramNotifier(
-        config['telegram']['token'],
-        config['telegram']['chat_id']
-    )
+
+    token = config['telegram'].get('token')
+    chat_id = config['telegram'].get('chat_id')
+
+    if not token or token == "YOUR_TELEGRAM_BOT_TOKEN":
+        logging.error("Telegram Token not configured. Please set TELEGRAM_TOKEN env var or update config.json")
+        return
+
+    notifier = TelegramNotifier(token, chat_id)
 
     # Send initial test signal
     notifier.send_test_signal()

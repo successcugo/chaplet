@@ -27,8 +27,8 @@
     "strategies": {
         "ema_crossover": {
             "enabled": true,
-            "fast_period": 9,
-            "slow_period": 21
+            "fast_period": 10,
+            "slow_period": 20
         },
         "rsi_macd_confluence": {
             "enabled": true,
