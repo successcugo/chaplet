@@ -1,10 +1,8 @@
 import logging
 from tradingview_ta import TA_Handler, Interval
-import pandas as pd
-import logging
 try:
-    from tvdatafeed import TvDatafeed, Interval as TvInterval
-except ImportError:
+    from tvdatafeed import TvDatafeed
+except (ImportError, Exception):
     TvDatafeed = None
 
 class DataProvider:
@@ -14,6 +12,8 @@ class DataProvider:
         self.tv = None
         if self.provider_type == "tvdatafeed" and TvDatafeed:
             try:
+                # tvdatafeed might still depend on pandas internally,
+                # but we'll try to initialize it safely.
                 self.tv = TvDatafeed()
             except Exception as e:
                 logging.error(f"Failed to initialize tvdatafeed: {e}")
@@ -36,19 +36,19 @@ class DataProvider:
         if not self.tv:
             return None
         try:
-            # tvdatafeed returns a dataframe
-            # We would need to calculate indicators manually here if not provided by TV
-            # For simplicity, if using tvdatafeed, we'll try to map common values
-            data = self.tv.get_hist(symbol=symbol, exchange=exchange, n_bars=100)
-            if data is not None and not data.empty:
-                # Basic mock of indicators dict for the strategy
+            # tvdatafeed returns a pandas dataframe by default.
+            # If pandas is missing, this will likely fail.
+            data = self.tv.get_hist(symbol=symbol, exchange=exchange, n_bars=1)
+            if data is not None and hasattr(data, 'empty') and not data.empty:
+                # Try to extract close price without needing full pandas logic if possible
+                # or just use the last row.
+                last_row = data.iloc[-1]
                 indicators = {
-                    "close": data['close'].iloc[-1],
-                    "open": data['open'].iloc[-1],
-                    "high": data['high'].iloc[-1],
-                    "low": data['low'].iloc[-1],
+                    "close": float(last_row['close']),
+                    "open": float(last_row['open']),
+                    "high": float(last_row['high']),
+                    "low": float(last_row['low']),
                 }
-                # In a real scenario, we'd use talib or pandas_ta here
                 return indicators
         except Exception as e:
             logging.error(f"Error fetching TV data for {symbol}: {e}")
@@ -61,4 +61,5 @@ class DataProvider:
         if self.provider_type == "tradingview-ta":
             return self.get_indicators_ta(symbol, exchange, screener, interval)
         else:
+            # If we are in an environment without pandas, tvdatafeed will likely fail.
             return self.get_indicators_tv(symbol, exchange, interval)

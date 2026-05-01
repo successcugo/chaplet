@@ -51,7 +51,7 @@ class TelegramNotifier:
             f"Indicators:\n"
             f"- RSI: {indicators.get('RSI'):.2f}\n"
             f"- MACD: {indicators.get('MACD.macd'):.5f}\n"
-            f"- EMA9: {indicators.get('EMA9'):.5f}"
+            f"- EMA10: {indicators.get('EMA10'):.5f}"
         )
         return self.send_message(message)
 
